@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { PostList, PostShow, PostCreate, PostEdit } from './posts';
-import { UserList, UserShow, UserCreate, UserEdit } from './users';
+import { UserList, UserShow, UserCreate, UserEdit } from './users/users';
+import { ProductList, ProductShow, ProductCreate, ProductEdit } from './products/products';
+// import { OrderList, OrderShow, OrderCreate, OrderEdit } from './orders/orders';
 import { Admin, Resource } from 'react-admin';
 import {
   FirebaseDataProvider,
@@ -42,7 +44,7 @@ class App extends React.Component {
         authProvider={authProvider}
       >
         <Resource
-          name="posts"
+          name="orders"
           list={PostList}
           show={PostShow}
           create={PostCreate}
@@ -55,6 +57,14 @@ class App extends React.Component {
           show={UserShow}
           create={UserCreate}
           edit={UserEdit}
+        />
+        <Resource
+          name="produits"
+          icon={UserIcon}
+          list={ProductList}
+          show={ProductShow}
+          create={ProductCreate}
+          edit={ProductEdit}
         />
       </Admin>
     );

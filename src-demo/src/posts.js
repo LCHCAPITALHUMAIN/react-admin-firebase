@@ -26,9 +26,19 @@ import {
   FileField,
   ArrayInput,
   SimpleFormIterator,
+  ArrayField,
+  useRecordContext,
 } from "react-admin";
 import RichTextInput from "ra-input-rich-text";
-
+import OrderItem from "./OrderItem";
+import {
+  Card,
+  CardContent,
+  Box,
+  Grid,
+  Typography,
+  Link,
+} from '@material-ui/core';
 const PostFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Search" source="title" alwaysOn />
@@ -49,6 +59,7 @@ const ReferenceFilter = (props) => (
 );
 
 export const PostList = (props) => (
+
   <List
     {...props}
     // filters={<ReferenceFilter />}
@@ -56,12 +67,11 @@ export const PostList = (props) => (
   >
     <Datagrid>
       <TextField source="id" />
-      <TextField source="title" />
-      <TextField source="publishing_state" />
-      <TextField source="updatedby" />
+      <TextField source="ts" />
+      <TextField source="price.total" />
       <TextField source="createdby" />
       <RichTextField source="body" />
-      <ReferenceField label="User" source="user_id" reference="users">
+      <ReferenceField label="User" source="uid" reference="users">
         <TextField source="name" />
       </ReferenceField>
       <ShowButton label="" />
@@ -71,25 +81,62 @@ export const PostList = (props) => (
   </List>
 );
 
-export const PostShow = (props) => (
-  <Show {...props}>
+export const PostShow = (props) => {
+
+console.log({props:props});
+  /*const display = props.orders.map((order, index) => {
+        console.log(order);
+        return <OrderItem {...order} key={order.ts} />
+     
+});buildingNumber
+"aaaaaaaaa"
+(chaîne)
+city
+"aaaaaaaaaa"
+country
+"aaaaaaaaa"
+pinCode
+"aaaaaaa"
+state
+"aaaaaaaaaa"
+streetName
+"aaaaaaaaa"*/
+const PurpleTextField = ({ source }) => {
+  const record = useRecordContext();
+  console.log(record)
+  return (<Box>
+    <Typography>
+      {record[source].first_name} {record[source].last_name}
+    </Typography>
+    <Typography> Adresse : {record[source].buildingNumber}, {record[source].streetName} </Typography>
+    <Typography>
+      Code postal : {record[source].pinCode} <br />
+      Ville : {record[source].city} {record[source].state} {record[source].country}
+    </Typography>
+  </Box>);
+};
+  return ( <Show {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
-      <TextField source="createdate" />
-      <TextField source="lastupdate" />
-      <TextField source="title" />
-      <RichTextField source="body" />
+      <DateField source="ts" />
       <ReferenceField label="User" source="user_id" reference="users">
         <TextField source="name" />
       </ReferenceField>
-      <FileField
-        source="files_multiple.src"
-        title="files_multiple.title"
-        multiple
-      />
+      <TextField source="price.total" />
+      <Box>
+      <PurpleTextField source="address" />
+      </Box>
+      <ArrayField source="order">
+    <Datagrid>
+        <TextField source="name" />
+        <TextField source="price" />
+        <TextField source="quantity" />
+    </Datagrid>
+</ArrayField>
     </SimpleShowLayout>
-  </Show>
-);
+     
+  </Show>)
+};
 
 export const PostCreate = (props) => (
   <Create {...props}>
